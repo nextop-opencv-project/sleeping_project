@@ -1,7 +1,7 @@
 import dlib
 import cv2
 from imutils import face_utils
-import ourmodulepack as m # 이 파일은 따로 업로드 했으니 따로 
+import ourmodulepack as m # 이 파일은 따로 업로드 했으니 따로 확인하시오
 import keyboard
 import sys
 from playsound import playsound
