@@ -15,7 +15,7 @@ def fps_calculate():
     video.release()
     return fps
 
-# Eye Aspect Ratio: 눈의 모양을 보고 눈이 얼마나 감겨있는지 측정한다
+# Eye Aspect Ratio: 눈의 특징점 6개의 좌표로 눈이 얼마나 감겨있는지 
 def EAR(eye):
     a = dist.euclidean(eye[1], eye[5])
     b = dist.euclidean(eye[2], eye[4])
