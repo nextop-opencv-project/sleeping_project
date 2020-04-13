@@ -1,6 +1,6 @@
 import cv2
 import time
-from scipy.spatial import distance as dist
+from scipy.spatial import distance as dist 
 
 
 def fps_calculate():
