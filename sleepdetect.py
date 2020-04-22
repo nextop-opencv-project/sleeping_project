@@ -35,7 +35,7 @@ while True:
         ear_left = m.EAR(shape[36:42])  # 왼쪽눈
         ear_right = m.EAR(shape[42:48])  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
-        # EAR 값이 기준보다 으면 카운터 증가
+        # EAR 값이 기준보다 낮으면 카운터 증가
         if average_ear <= EAR_THRESHOLD:
             counter += 1
         elif counter > 0:
