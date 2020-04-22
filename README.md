@@ -6,3 +6,4 @@ https://ko.osdn.net/projects/sfnet_dclib/downloads/dlib/v18.10/shape_predictor_6
 쓰인 모듈 한번에 다운 받고 싶을때 anaconda에서 
 pip install -r requirements.txt 입력후 엔터 누르면 한번에 설치가능
 ----------------------------------------------------------------------------------------------
+requirements.txt를 콘솔에 쓰기 전에 requirements.txt 파일을 콘솔 창에 드래그해도 
