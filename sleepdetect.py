@@ -30,7 +30,7 @@ while True:
     for (i, rect) in enumerate(rects):
         shape = predictor(image, rect)
         shape = face_utils.shape_to_np(shape)
-        # 2-1에 해당하는 코드가...없었다
+        # 2-1은 2-2를 하는 과정에서 자연스럽게 되므로 스킵
         # 2-2
         ear_left = m.EAR(shape[36:42])  # 왼쪽눈
         ear_right = m.EAR(shape[42:48])  # 오른쪽눈
