@@ -5,7 +5,7 @@ import ourmodulepack as m
 import keyboard
 import sys
 from playsound import playsound
-EAR_THRESHOLD = 2  # EAR 기준
+EAR_THRESHOLD = 0.15  # EAR 기준
 SLEEPTIME_THRESHOLD = 2  # 조는 시간 (단위:초)
 
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
@@ -17,8 +17,8 @@ COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
 if FRAMES_PER_SECOND == -1:
     print("초당 프레임률 계산 실패!")
 camera = cv2.VideoCapture(0)
-if not camera.isOpened():
-    sys.exit("카메라가 감지되지 않았습니다!")
+# if not camera.isOpened():
+    # sys.exit("카메라가 감지되지 않았습니다!")
 
 
 while True:
@@ -35,6 +35,7 @@ while True:
         ear_left = m.EAR(shape[36:42])  # 왼쪽눈
         ear_right = m.EAR(shape[42:48])  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
+        print(average_ear)
         # 3
         if average_ear <= EAR_THRESHOLD:
             counter += 1
@@ -44,9 +45,6 @@ while True:
             sleeping = True
         else:
             sleeping = False
-        if sleeping:
-            print("졸음 경고!!")
-            playsound('alarm.mp3')
     if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
         break
 camera.release()
