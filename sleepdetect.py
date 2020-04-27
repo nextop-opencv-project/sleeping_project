@@ -5,7 +5,7 @@ import ourmodulepack as m
 import keyboard
 import sys
 from playsound import playsound
-EAR_THRESHOLD = 2  # EAR 기준
+EAR_THRESHOLD = 0.1  # EAR 기준
 SLEEPTIME_THRESHOLD = 2  # 조는 시간 (단위:초)
 
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
