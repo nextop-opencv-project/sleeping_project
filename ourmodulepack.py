@@ -11,7 +11,7 @@ def fps_calculate():
         ret, frame = video.read()
     end = time.time()
     seconds = end - start
-    if seconds == 0:
+    if seconds==0:
         return 60
     fps = num_frames / seconds
     video.release()
