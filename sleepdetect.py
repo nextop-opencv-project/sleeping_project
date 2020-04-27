@@ -40,7 +40,6 @@ while True:
             counter += 1
         elif counter > 0:
             counter -= 1
-        # 4
         if counter >= COUNTER_THRESHOLD:
             sleeping = True
         else:
