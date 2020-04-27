@@ -41,6 +41,9 @@ while True:
             sleeping = True
         else:
             sleeping = False
+        if sleeping:
+            print("졸음 경고!!")
+            playsound('alarm.mp3')
     if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
         break
 camera.release()
