@@ -13,11 +13,17 @@ https://ko.osdn.net/frs/g_redir.php?m=kent&f=dclib%2Fdlib%2Fv18.10%2Fshape_predi
 
 ##### 1.아나콘다에서 파이썬 환경을 하나 만든다.(conda create -n <환경 이름> python=3.6)
 
+* https://github.com/ParkJH1/Python-Tutorial <---아나콘다 만드는 법은 여기서 자세히 설명
 
 
-##### 2.자신이 만든 환경에 접속후(conda activate),자신의 프로젝트 파일 경로를 찾는다.
+
+##### 2.자신이 만든 환경에 접속후(conda activate),requirements.txt가 들어있는 자신의 프로젝트 파일 경로를 찾는다.
 
 ![Alt text](./img/2.PNG)
+
+![Alt text](./img/2_2.PNG)
+
+* 꼭 requirements.txt가 있는 경로를 복사할것.
 
 
 
