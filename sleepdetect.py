@@ -20,8 +20,7 @@ if not camera.isOpened():
 
 while True:
     # 1-1
-    # image = camera.read()
-    image = cv2.imread("human.jpg", cv2.IMREAD_GRAYSCALE)
+    image = camera.read()
     # 1-2?
     rects = detector(image, 0)
     for (i, rect) in enumerate(rects):
