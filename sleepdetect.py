@@ -28,14 +28,20 @@ while True:
         shape = face_utils.shape_to_np(shape)
         # 2-1은 2-2를 하는 과정에서 자연스럽게 되므로 스킵
         # 2-2
-        ear_left = m.EAR(shape[36:42])  # 왼쪽눈
-        ear_right = m.EAR(shape[42:48])  # 오른쪽눈
+        Lefteye=shape[36:42]
+        Righteye=shape[42:48]
+        ear_left = m.EAR(Lefteye)  # 왼쪽눈
+        ear_right = m.EAR(Righteye)  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
         # 3
         if average_ear <= EAR_THRESHOLD:
             counter += 1
         elif counter > 0:
             counter -= 1
+        Lefthull = cv2.convexHull(Lefteye)
+        Righthull = cv2.convexHull(Righteye)
+        cv2.drawContours(image, [Lefthull], -1, (0, 255, 0), 1)
+        cv2.drawContours(image, [Righthull], -1, (0, 255, 0), 1)
         if counter >= COUNTER_THRESHOLD:
             sleeping = True
         else:
@@ -43,6 +49,7 @@ while True:
         if sleeping:
             print("졸음 경고!!")
             playsound('alarm.mp3')
+    cv2.imshow('facecam',image)
     if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
         break
 camera.release()
