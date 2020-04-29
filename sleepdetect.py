@@ -14,11 +14,9 @@ counter = 0
 sleeping = False
 FRAMES_PER_SECOND = m.fps_calculate()
 COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
-if FRAMES_PER_SECOND == -1:
-    print("초당 프레임률 계산 실패!")
 camera = cv2.VideoCapture(0)
-# if not camera.isOpened():
-    # sys.exit("카메라가 감지되지 않았습니다!")
+if not camera.isOpened():
+    sys.exit("카메라가 감지되지 않았습니다!")
 
 
 while True:
@@ -35,7 +33,6 @@ while True:
         ear_left = m.EAR(shape[36:42])  # 왼쪽눈
         ear_right = m.EAR(shape[42:48])  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
-        print(average_ear)
         # 3
         if average_ear <= EAR_THRESHOLD:
             counter += 1
