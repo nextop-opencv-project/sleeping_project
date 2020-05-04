@@ -52,4 +52,5 @@ while True:
     cv2.imshow('facecam',image)
     if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
         break
+cv2.destroyAllWindows()
 camera.release()
