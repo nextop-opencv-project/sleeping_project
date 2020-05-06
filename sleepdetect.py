@@ -13,7 +13,7 @@ counter = 0
 sleeping = False
 FRAMES_PER_SECOND = m.fps_calculate()
 COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 if not camera.isOpened():
     sys.exit("카메라가 감지되지 않았습니다!")
 while True:
@@ -27,8 +27,8 @@ while True:
         shape = face_utils.shape_to_np(shape)
         # 2-1은 2-2를 하는 과정에서 자연스럽게 되므로 스킵
         # 2-2
-        Lefteye=shape[36:42]
-        Righteye=shape[42:48]
+        Lefteye = shape[36:42]
+        Righteye = shape[42:48]
         ear_left = m.EAR(Lefteye)  # 왼쪽눈
         ear_right = m.EAR(Righteye)  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
