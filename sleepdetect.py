@@ -4,6 +4,7 @@ from imutils import face_utils
 import ourmodulepack as m
 import keyboard
 import sys
+import imutils
 from playsound import playsound
 EAR_THRESHOLD = 0.15  # EAR 기준
 SLEEPTIME_THRESHOLD = 2  # 조는 시간 (단위:초)
@@ -19,7 +20,7 @@ if not camera.isOpened():
 while True:
     # 1-1
     image = camera.read()
-    grayimg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    grayimg = cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2GRAY)
     # 1-2?
     rects = detector(grayimg, 0)
     for (i, rect) in enumerate(rects):
@@ -48,7 +49,7 @@ while True:
         if sleeping:
             print("졸음 경고!!")
             playsound('alarm.mp3')
-    cv2.imshow('facecam',image)
+    cv2.imshow('image', image)
     if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
         break
 cv2.destroyAllWindows()
