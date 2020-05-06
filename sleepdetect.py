@@ -21,7 +21,6 @@ if not camera.isOpened():
 while True:
     # 1-1
     image = camera.read()
-    image = imutils.resize(image, width=500)
     grayimg = cv2.cvtColor(np.float32(image), cv2.COLOR_BGR2GRAY)
     # 1-2?
     rects = detector(grayimg, 0)
