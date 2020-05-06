@@ -6,6 +6,7 @@ import keyboard
 import sys
 import imutils
 from playsound import playsound
+import numpy as np
 EAR_THRESHOLD = 0.15  # EAR 기준
 SLEEPTIME_THRESHOLD = 2  # 조는 시간 (단위:초)
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
@@ -20,7 +21,8 @@ if not camera.isOpened():
 while True:
     # 1-1
     image = camera.read()
-    grayimg = cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2GRAY)
+    image = imutils.resize(image, width=500)
+    grayimg = cv2.cvtColor(np.float32(image), cv2.COLOR_BGR2GRAY)
     # 1-2?
     rects = detector(grayimg, 0)
     for (i, rect) in enumerate(rects):
@@ -50,6 +52,7 @@ while True:
             print("졸음 경고!!")
             playsound('alarm.mp3')
     cv2.imshow('image', image)
+    key=cv2.waitKey(0)
     if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
         break
 cv2.destroyAllWindows()
