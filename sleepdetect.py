@@ -20,8 +20,7 @@ if not camera.isOpened():
     sys.exit("카메라가 감지되지 않았습니다!")
 while True:
     # 1-1
-    image = camera.read()
-    image = np.asarray(image)
+    _, image = camera.read()
     grayimg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 1-2?
     rects = detector(grayimg, 0)
