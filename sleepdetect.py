@@ -4,9 +4,7 @@ from imutils import face_utils
 import ourmodulepack as m
 import keyboard
 import sys
-import imutils
 from playsound import playsound
-import numpy as np
 EAR_THRESHOLD = 0.15  # EAR 기준
 SLEEPTIME_THRESHOLD = 2  # 조는 시간 (단위:초)
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
@@ -24,7 +22,9 @@ while True:
     grayimg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 1-2?
     rects = detector(grayimg, 0)
+    eyedetected = False
     for (i, rect) in enumerate(rects):
+        eyedetected = True
         shape = predictor(grayimg, rect)
         shape = face_utils.shape_to_np(shape)
         # 2-1은 2-2를 하는 과정에서 자연스럽게 되므로 스킵
@@ -34,6 +34,7 @@ while True:
         ear_left = m.EAR(Lefteye)  # 왼쪽눈
         ear_right = m.EAR(Righteye)  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
+        print(average_ear)
         # 3
         if average_ear <= EAR_THRESHOLD:
             counter += 1
@@ -50,8 +51,10 @@ while True:
         if sleeping:
             print("졸음 경고!!")
             playsound('alarm.mp3')
+    if not eyedetected:
+        print("눈이 감지되지 않았습니다!")
     cv2.imshow('image', image)
-    key = cv2.waitKey(0)
+    key = cv2.waitKey(1)
     if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
         break
 cv2.destroyAllWindows()
