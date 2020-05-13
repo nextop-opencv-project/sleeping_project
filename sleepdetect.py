@@ -2,7 +2,6 @@ import dlib
 import cv2
 from imutils import face_utils
 import ourmodulepack as m
-import keyboard
 import sys
 from playsound import playsound
 EAR_THRESHOLD = 0.15  # EAR 기준
@@ -23,6 +22,7 @@ while True:
     # 1-2?
     rects = detector(grayimg, 0)
     eyedetected = False
+    eyealarm = False
     for (i, rect) in enumerate(rects):
         eyedetected = True
         shape = predictor(grayimg, rect)
@@ -34,7 +34,7 @@ while True:
         ear_left = m.EAR(Lefteye)  # 왼쪽눈
         ear_right = m.EAR(Righteye)  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
-        print(average_ear)
+        print('EAR Value: ', average_ear)
         # 3
         if average_ear <= EAR_THRESHOLD:
             counter += 1
@@ -52,10 +52,14 @@ while True:
             print("졸음 경고!!")
             playsound('alarm.mp3')
     if not eyedetected:
+        eyealarm = True
+    else:
+        eyealarm = False
+    if eyealarm:
         print("눈이 감지되지 않았습니다!")
     cv2.imshow('image', image)
     key = cv2.waitKey(1)
-    if keyboard.is_pressed('q'):  # 'q'를 누르면 종료
+    if key == 'q':
         break
 cv2.destroyAllWindows()
 camera.release()
