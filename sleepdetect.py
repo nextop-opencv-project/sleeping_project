@@ -57,6 +57,7 @@ while True:
         eyealarm = False
     if eyealarm:
         print("눈이 감지되지 않았습니다!")
+        playsound('alarm.mp3')
     cv2.imshow('image', image)
     key = cv2.waitKey(1)
     if key == 'q':
