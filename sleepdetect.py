@@ -2,19 +2,21 @@ import dlib
 import cv2
 from imutils import face_utils
 import ourmodulepack as m
-import sys
+from sys import exit
 from playsound import playsound
+import keyboard
 EAR_THRESHOLD = 0.15  # EAR 기준
-SLEEPTIME_THRESHOLD = 2  # 조는 시간 (단위:초)
+SLEEPTIME_THRESHOLD = 1.5  # 조는 시간 (단위:초)
 FRAMES_PER_SECOND = m.fps_calculate()
 COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
+
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 detector = dlib.get_frontal_face_detector()
 counter = 0
 sleeping = False
 camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 if not camera.isOpened():
-    sys.exit("카메라가 감지되지 않았습니다!")
+    exit("카메라가 감지되지 않았습니다!")
 while True:
     # 1-1
     _, image = camera.read()
@@ -40,7 +42,7 @@ while True:
         cv2.drawContours(image, [Righthull], -1, (0, 255, 0), 1)
     print('EAR Value: ', average_ear)
     # 3
-    if average_ear <= EAR_THRESHOLD:
+    if average_ear <= EAR_THRESHOLD and counter < COUNTER_THRESHOLD:
         counter += 1
     elif counter > 0:
         counter -= 1
@@ -53,7 +55,7 @@ while True:
         playsound('alarm.mp3')
     cv2.imshow('image', image)
     key = cv2.waitKey(1)
-    if key == 'q':
+    if keyboard.is_pressed('q'):
         break
 cv2.destroyAllWindows()
 camera.release()
