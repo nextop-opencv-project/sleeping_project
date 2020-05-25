@@ -1,20 +1,25 @@
 import cv2
 import time
-from scipy.spatial import distance as dist 
+from scipy.spatial import distance as dist
 
 
 def fps_calculate():
+    print('프레임 레이트 계산 시작.')
     video = cv2.VideoCapture(0)
-    num_frames = 300
+    num_frames = 100
     start = time.time()
     for i in range(0, num_frames):
         ret, frame = video.read()
+        if i % 25 == 0:
+            print('프레임 레이트 계산중...%d%'.format(i))
     end = time.time()
     seconds = end - start
-    if seconds==0:
+    if seconds == 0:
+        print('프레임 레이트 계산 중 오류 발생. 기본값인 60으로 설정함.')
         return 60
     fps = num_frames / seconds
     video.release()
+    print('프레임 레이트 계산 완료. FPS: ', fps)
     return fps
 
 
