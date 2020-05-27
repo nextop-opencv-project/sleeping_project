@@ -11,7 +11,7 @@ def fps_calculate():
     for i in range(0, num_frames):
         ret, frame = video.read()
         if i % 25 == 0:
-            print('프레임 레이트 계산중...%d%'.format(i))
+            print('프레임 레이트 계산중...{}%'.format(i))
     end = time.time()
     seconds = end - start
     if seconds == 0:

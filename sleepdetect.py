@@ -5,16 +5,18 @@ import ourmodulepack as m
 from sys import exit
 from playsound import playsound
 import keyboard
-from PIL import Image, ImageDraw, ImageFont
+
 print("프로그램 시작.")
-EAR_THRESHOLD = 0.15  # EAR 기준
+EAR_THRESHOLD = 0.15  # EAR값의 기준
 SLEEPTIME_THRESHOLD = 1.5  # 조는 시간 (단위:초)
 FRAMES_PER_SECOND = m.fps_calculate()
 COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
-
-strpos1 = (0, 0)
+orange = (0, 127, 255)
+red = (0, 0, 255)
+green = (0, 255, 0)
+strpos1 = (0, 20)
 strpos2 = (0, 50)
-UsedFont = ImageFont.truetype('/Windows/Fonts/gulim.ttc', 20)
+UsedFont = cv2.FONT_HERSHEY_PLAIN
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 facedetector = dlib.get_frontal_face_detector()
 counter = 0
@@ -26,7 +28,6 @@ print('감지 시작.')
 while True:
     # 1-1
     unused, image = camera.read()
-    draw = ImageDraw.Draw(image)
     grayimg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 1-2?
     rects = facedetector(grayimg, 0)
@@ -47,21 +48,22 @@ while True:
         Righthull = cv2.convexHull(Righteye)
         cv2.drawContours(image, [Lefthull], -1, (0, 255, 0), 1)
         cv2.drawContours(image, [Righthull], -1, (0, 255, 0), 1)
-
+    cv2.putText(image, 'test', strpos2, UsedFont, 2, orange, 2)
     if eyedetected:
-        draw.text(strpos1, 'EAR Value: %.3f'.format(average_ear) , fill='green',font=UsedFont)
+        cv2.putText(image, 'EAR Value: {:.3}'.format(average_ear), strpos1, UsedFont, 1, green, 2)
         if average_ear <= EAR_THRESHOLD and counter < COUNTER_THRESHOLD:
             counter += 1
         elif counter > 0:
             counter -= 1
-        SleepWarning = int(counter*3/COUNTER_THRESHOLD)
+        SleepWarning = int(counter * 3 / COUNTER_THRESHOLD)
         if SleepWarning == 3:
-            draw.text(strpos2, '졸음 경고!!'.format(average_ear), fill='red', font=UsedFont)
+            cv2.putText(image, 'SLEEPING ALERT!', strpos2, UsedFont, 2, red, 2)
             playsound('alarm.mp3')
         elif SleepWarning > 0:
-            draw.text(strpos2, '졸음 주의 %d'.format(SleepWarning), fill='orange', font=UsedFont)
-    else: draw.text(strpos1, '눈 감지 실패'.format(average_ear), fill='green', font=UsedFont)
-    cv2.imshow('image', image)
+            cv2.putText(image, 'Sleeping warning lv {}'.format(SleepWarning), strpos2, UsedFont, 2, orange, 2)
+    else:
+        cv2.putText(image, 'Eye not detected.', strpos1, UsedFont, 2, green, 2)
+    cv2.imshow('screen', image)
     key = cv2.waitKey(1)
     if keyboard.is_pressed('q'):
         break
