@@ -5,12 +5,12 @@ import ourmodulepack as m
 from sys import exit
 from playsound import playsound
 import keyboard
-
 print("프로그램 시작.")
 EAR_THRESHOLD = 0.15  # EAR값의 기준
 SLEEPTIME_THRESHOLD = 1.5  # 조는 시간 (단위:초)
 FRAMES_PER_SECOND = m.fps_calculate()
 COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
+counter = 0
 orange = (0, 127, 255)
 red = (0, 0, 255)
 green = (0, 255, 0)
@@ -19,8 +19,6 @@ strpos2 = (0, 50)
 UsedFont = cv2.FONT_HERSHEY_PLAIN
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 facedetector = dlib.get_frontal_face_detector()
-counter = 0
-SleepWarning = 0
 camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 if not camera.isOpened():
     exit("카메라가 감지되지 않았습니다!")
@@ -48,7 +46,6 @@ while True:
         Righthull = cv2.convexHull(Righteye)
         cv2.drawContours(image, [Lefthull], -1, (0, 255, 0), 1)
         cv2.drawContours(image, [Righthull], -1, (0, 255, 0), 1)
-    cv2.putText(image, 'test', strpos2, UsedFont, 2, orange, 2)
     if eyedetected:
         cv2.putText(image, 'EAR Value: {:.3}'.format(average_ear), strpos1, UsedFont, 1, green, 2)
         if average_ear <= EAR_THRESHOLD and counter < COUNTER_THRESHOLD:
