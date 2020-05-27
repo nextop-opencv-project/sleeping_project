@@ -4,9 +4,7 @@ Distance
 dlib
 imutils
 keyboard
-numpy
 opencv-python
 playsound
 scipy
 wincertstore
-pillow

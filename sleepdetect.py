@@ -5,8 +5,8 @@ import ourmodulepack as m
 from sys import exit
 from playsound import playsound
 import keyboard
+
 print("프로그램 시작.")
-EAR_THRESHOLD = 0.15  # EAR값의 기준
 SLEEPTIME_THRESHOLD = 1.5  # 조는 시간 (단위:초)
 FRAMES_PER_SECOND = m.fps_calculate()
 COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
@@ -22,6 +22,22 @@ facedetector = dlib.get_frontal_face_detector()
 camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 if not camera.isOpened():
     exit("카메라가 감지되지 않았습니다!")
+while True:
+    lv = input('감지 민감도를 선택하세요.(1~4단계)')
+    if lv == 1:
+        EAR_THRESHOLD = 0.1
+        break
+    elif lv == 2:
+        EAR_THRESHOLD = 0.12
+        break
+    elif lv == 3:
+        EAR_THRESHOLD = 0.15
+        break
+    elif lv == 4:
+        EAR_THRESHOLD = 0.2
+        break
+    else:
+        print('1~4 사이이 숫자를 입력하세요.')
 print('감지 시작.')
 while True:
     # 1-1
