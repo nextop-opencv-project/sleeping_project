@@ -5,7 +5,7 @@ from scipy.spatial import distance as dist
 
 def fps_calculate():
     print('프레임 레이트 계산 시작.')
-    video = cv2.VideoCapture(0)
+    video = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     num_frames = 100
     start = time.time()
     for i in range(0, num_frames):
