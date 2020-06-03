@@ -3,7 +3,7 @@ import cv2
 from imutils import face_utils
 import ourmodulepack as m
 from sys import exit
-from playsound import playsound
+import winsound
 import keyboard
 print("프로그램 시작.")
 SLEEPTIME_THRESHOLD = 1.5  # 조는 시간 (단위:초)
@@ -19,7 +19,7 @@ strpos2 = (0, 50)
 UsedFont = cv2.FONT_HERSHEY_PLAIN
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 facedetector = dlib.get_frontal_face_detector()
-camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+camera = cv2.VideoCapture('testvideo.mp4')
 if not camera.isOpened():
     exit("카메라가 감지되지 않았습니다!")
 while True:
@@ -72,7 +72,7 @@ while True:
     SleepWarning = int(counter * 3 / COUNTER_THRESHOLD)
     if SleepWarning == 3:
         cv2.putText(image, 'SLEEPING ALERT!', strpos2, UsedFont, 2, red, 2)
-        playsound('alarm.mp3')
+        winsound.PlaySound('alarm.wav', winsound.SND_FILENAME)
     elif SleepWarning > 0:
         cv2.putText(image, 'Sleeping warning lv {}'.format(SleepWarning), strpos2, UsedFont, 2, orange, 2)
     cv2.imshow('screen', image)
