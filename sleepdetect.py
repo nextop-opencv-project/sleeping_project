@@ -18,6 +18,7 @@ strpos1 = (0, 20)
 strpos2 = (0, 50)
 UsedFont = cv2.FONT_HERSHEY_PLAIN
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+facecascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 facedetector = dlib.get_frontal_face_detector()
 camera = cv2.VideoCapture('testvideo.mp4')
 if not camera.isOpened():
@@ -45,6 +46,11 @@ while True:
     unused, image = camera.read()
     grayimg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 1-2?
+    haardetected = False
+    d = facecascade.detectMultiScale(grayimg, 1.5, 5)
+    for x, y, w, h in d:
+        haardetected = True
+        break
     rects = facedetector(grayimg, 0)
     average_ear = 0
     for (i, rect) in enumerate(rects):
@@ -61,20 +67,23 @@ while True:
         Righthull = cv2.convexHull(Righteye)
         cv2.drawContours(image, [Lefthull], -1, (0, 255, 0), 1)
         cv2.drawContours(image, [Righthull], -1, (0, 255, 0), 1)
+
     if average_ear == 0:  # 눈 감지 안됨
         cv2.putText(image, 'Eye not detected.', strpos1, UsedFont, 2, green, 2)
     else:
         cv2.putText(image, 'EAR Value: {:.3}'.format(average_ear), strpos1, UsedFont, 2, green, 2)
-    if average_ear <= EAR_THRESHOLD and counter <= COUNTER_THRESHOLD:
-        counter += 1
-    elif counter > 0:
-        counter -= 1
-    SleepWarning = int(counter * 3 / COUNTER_THRESHOLD)
-    if SleepWarning == 3:
-        cv2.putText(image, 'SLEEPING ALERT!', strpos2, UsedFont, 2, red, 2)
-        winsound.PlaySound('alarm.wav', winsound.SND_FILENAME)
-    elif SleepWarning > 0:
-        cv2.putText(image, 'Sleeping warning lv {}'.format(SleepWarning), strpos2, UsedFont, 2, orange, 2)
+    if haardetected:
+        if average_ear <= EAR_THRESHOLD and counter <= COUNTER_THRESHOLD:
+            counter += 1
+        elif counter > 0:
+            counter -= 1
+        SleepWarning = int(counter * 3 / COUNTER_THRESHOLD)
+        if SleepWarning == 3:
+            cv2.putText(image, 'SLEEPING ALERT!', strpos2, UsedFont, 2, red, 2)
+            winsound.PlaySound('alarm.wav', winsound.SND_FILENAME)
+        elif SleepWarning > 0:
+            cv2.putText(image, 'Sleeping warning lv {}'.format(SleepWarning), strpos2, UsedFont, 2, orange, 2)
+    cv2.putText(image, 'haarcascade: {}'.format(haardetected), (0, 80), UsedFont, 2, orange, 2)
     cv2.imshow('screen', image)
     key = cv2.waitKey(1)
     if keyboard.is_pressed('q'):
