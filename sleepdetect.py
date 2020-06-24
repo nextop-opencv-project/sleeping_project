@@ -5,6 +5,7 @@ import ourmodulepack as m
 from sys import exit
 import winsound
 import keyboard
+from datetime import datetime
 print("프로그램 시작.")
 SLEEPTIME_THRESHOLD = 1.5  # 조는 시간 (단위:초)
 FRAMES_PER_SECOND = m.fps_calculate()
@@ -20,7 +21,7 @@ UsedFont = cv2.FONT_HERSHEY_PLAIN
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 facecascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 facedetector = dlib.get_frontal_face_detector()
-camera = cv2.VideoCapture('testvideo.mp4')
+camera = cv2.VideoCapture(0)
 if not camera.isOpened():
     exit("카메라가 감지되지 않았습니다!")
 while True:
@@ -40,7 +41,9 @@ while True:
     else:
         print('1~4 사이의 숫자를 입력하세요.')
 print('감지 시작.')
-
+Starttime = datetime.today()
+SleepTime = datetime.today()
+Sleeping = False
 while True:
     # 1-1
     unused, image = camera.read()
@@ -72,18 +75,24 @@ while True:
         cv2.putText(image, 'Eye not detected.', strpos1, UsedFont, 2, green, 2)
     else:
         cv2.putText(image, 'EAR Value: {:.3}'.format(average_ear), strpos1, UsedFont, 2, green, 2)
-    if haardetected:
-        if average_ear <= EAR_THRESHOLD and counter <= COUNTER_THRESHOLD:
-            counter += 1
-        elif counter > 0:
-            counter -= 1
-        SleepWarning = int(counter * 3 / COUNTER_THRESHOLD)
+    if average_ear <= EAR_THRESHOLD and counter <= COUNTER_THRESHOLD:
+        counter += 1
+    elif counter > 0:
+        counter -= 1
+    SleepWarning = int(counter * 3 / COUNTER_THRESHOLD)
+    if SleepWarning > 0:
+        if not Sleeping:
+            SleepTime = datetime.today()
+            Sleeping = True
         if SleepWarning == 3:
             cv2.putText(image, 'SLEEPING ALERT!', strpos2, UsedFont, 2, red, 2)
             winsound.PlaySound('alarm.wav', winsound.SND_FILENAME)
-        elif SleepWarning > 0:
-            cv2.putText(image, 'Sleeping warning lv {}'.format(SleepWarning), strpos2, UsedFont, 2, orange, 2)
-    cv2.putText(image, 'haarcascade: {}'.format(haardetected), (0, 80), UsedFont, 2, orange, 2)
+        else: cv2.putText(image, 'Sleeping warning lv {}'.format(SleepWarning), strpos2, UsedFont, 2, orange, 2)
+    elif Sleeping:
+        Starttime += SleepTime-datetime.today()
+        Sleeping = False
+    runtime = datetime.today()-Starttime
+    cv2.putText(image, '{}'.format(runtime), (0, 80), UsedFont, 2, orange, 2)
     cv2.imshow('screen', image)
     key = cv2.waitKey(1)
     if keyboard.is_pressed('q'):
