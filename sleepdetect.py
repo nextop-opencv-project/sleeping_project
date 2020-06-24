@@ -7,9 +7,10 @@ import winsound
 import keyboard
 from datetime import datetime
 print("프로그램 시작.")
+camera = cv2.VideoCapture(0)
+if not camera.isOpened():
+    exit("카메라가 감지되지 않았습니다!")
 SLEEPTIME_THRESHOLD = 1.5  # 조는 시간 (단위:초)
-FRAMES_PER_SECOND = m.fps_calculate()
-COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
 SleepWarning = 0
 counter = 0
 orange = (0, 127, 255)
@@ -21,9 +22,8 @@ UsedFont = cv2.FONT_HERSHEY_PLAIN
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 facecascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 facedetector = dlib.get_frontal_face_detector()
-camera = cv2.VideoCapture(0)
-if not camera.isOpened():
-    exit("카메라가 감지되지 않았습니다!")
+FRAMES_PER_SECOND = m.fps_calculate()
+COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
 while True:
     lv = int(input('감지 민감도를 선택하세요.(1~4단계)'))
     if lv == 1:

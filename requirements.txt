@@ -8,4 +8,3 @@ opencv-python
 playsound
 scipy
 wincertstore
-datetime
