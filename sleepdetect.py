@@ -5,6 +5,7 @@ from sys import exit
 import winsound
 import keyboard
 from datetime import datetime
+import threading
 print("프로그램 시작.")
 camera = cv2.VideoCapture(0)
 if not camera.isOpened():
@@ -43,6 +44,7 @@ print('감지 시작.')
 Starttime = datetime.today()
 SleepTime = datetime.today()
 Sleeping = False
+alarm=threading.Thread(target=winsound.PlaySound,args=('alarm.wav', winsound.SND_FILENAME)
 while True:
     # 1-1
     unused, image = camera.read()
@@ -85,7 +87,7 @@ while True:
             Sleeping = True
         if SleepWarning == 3:
             cv2.putText(image, 'SLEEPING ALERT!', strpos2, UsedFont, 2, red, 2)
-            winsound.PlaySound('alarm.wav', winsound.SND_FILENAME)
+            alarm.start()
         else: cv2.putText(image, 'Sleeping warning lv {}'.format(SleepWarning), strpos2, UsedFont, 2, orange, 2)
     elif Sleeping:
         Starttime += SleepTime-datetime.today()
