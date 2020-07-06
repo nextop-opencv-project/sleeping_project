@@ -1,7 +1,6 @@
 import dlib
-import cv2
 from imutils import face_utils
-import ourmodulepack as m
+from ourmodulepack import *
 from sys import exit
 import winsound
 import keyboard
@@ -22,7 +21,7 @@ UsedFont = cv2.FONT_HERSHEY_PLAIN
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 facecascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 facedetector = dlib.get_frontal_face_detector()
-FRAMES_PER_SECOND = m.fps_calculate()
+FRAMES_PER_SECOND = fps_calculate()
 COUNTER_THRESHOLD = SLEEPTIME_THRESHOLD * FRAMES_PER_SECOND
 while True:
     lv = int(input('감지 민감도를 선택하세요.(1~4단계)'))
@@ -63,8 +62,8 @@ while True:
         # 2-2
         Lefteye = shape[36:42]
         Righteye = shape[42:48]
-        ear_left = m.EAR(Lefteye)  # 왼쪽눈
-        ear_right = m.EAR(Righteye)  # 오른쪽눈
+        ear_left = EAR(Lefteye)  # 왼쪽눈
+        ear_right = EAR(Righteye)  # 오른쪽눈
         average_ear = (ear_left + ear_right) / 2
         Lefthull = cv2.convexHull(Lefteye)
         Righthull = cv2.convexHull(Righteye)
